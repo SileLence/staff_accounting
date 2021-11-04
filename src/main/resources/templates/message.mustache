@@ -1,0 +1,28 @@
+<html>
+<body>
+    <p>
+        <a href="http://localhost:8080/employee">Go to Employee page</a>
+        <br>
+        <a href="http://localhost:8080/">Go to Main page</a>
+    </p>
+    <h3>MESSAGES</h3>
+    <p>Add a new Message:</p>
+    <div>
+        <form method="post">
+            <input type="text" name="text" placeholder="Text">
+            <br>
+            <input type="text" name="tag" placeholder="Tag">
+            <br>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <div>Messages List:</div>
+    {{#messages}}
+    <div>
+        <b>{{id}}</b>
+        <span>{{text}}</span>
+        <i>{{tag}}</i>
+    </div>
+    {{/messages}}
+</body>
+</html>

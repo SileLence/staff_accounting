@@ -1,0 +1,44 @@
+<html>
+<body>
+    <p>
+        <a href="http://localhost:8080/message">Go to Message page</a>
+        <br>
+        <a href="http://localhost:8080/">Go to Main page</a>
+    </p>
+    <h3>EMPLOYEES</h3>
+    <p>Add a new Employee:</p>
+    <div>
+        <form method="post">
+            <input type="text" name="firstname" placeholder="First Name"/>
+            <br>
+            <input type="text" name="surname" placeholder="Surname"/>
+            <br>
+            <input type="text" name="address" placeholder="Address"/>
+            <br>
+            <input type="text" name="email" placeholder="Email"/>
+            <br>
+            <input type="number" name="phoneNumber" placeholder="Phone Number"/>
+            <br>
+            <button type="submit">Add Employee</button>
+        </form>
+    </div>
+
+    <form method="post" action="find">
+        <input type="number" name="id" placeholder="ID">
+        <button type="submit">Find by ID</button>
+    </form>
+
+    <div>Found Employees:</div>
+    {{#employees}}
+    <div>
+        <b>{{id}}</b>
+        <span>{{firstname}}</span>
+        <span>{{surname}}</span>
+        <span>{{address}}</span>
+        <span>{{email}}</span>
+        <span>{{phoneNumber}}</span>
+    </div>
+    {{/employees}}
+
+</body>
+</html>
