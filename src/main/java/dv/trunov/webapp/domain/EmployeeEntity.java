@@ -7,30 +7,30 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
-public class Employee {
+public class EmployeeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String firstname;
     private String surname;
     private String address;
     private String email;
-    private String phoneNumber;
+    private String phone;
 
-    public Employee() {
+    public EmployeeEntity() {
     }
 
-    public Employee(String firstname,
-                    String surname,
-                    String address,
-                    String email,
-                    String phoneNumber) {
+    public EmployeeEntity(String firstname,
+                          String surname,
+                          String address,
+                          String email,
+                          String phone) {
         this.firstname = firstname;
         this.surname = surname;
         this.address = address;
         this.email = email;
-        this.phoneNumber = phoneNumber;
+        this.phone = phone;
     }
 
     public void setId(Integer id) {
@@ -73,20 +73,20 @@ public class Employee {
         this.email = email;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Employee employee = (Employee) o;
-        return Objects.equals(id, employee.id);
+        EmployeeEntity employeeEntity = (EmployeeEntity) o;
+        return Objects.equals(id, employeeEntity.id);
     }
 
     @Override
