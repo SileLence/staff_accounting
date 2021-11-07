@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
-public class EmployeeEntity {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -18,23 +18,19 @@ public class EmployeeEntity {
     private String email;
     private String phone;
 
-    public EmployeeEntity() {
+    public UserEntity() {
     }
 
-    public EmployeeEntity(String firstname,
-                          String surname,
-                          String address,
-                          String email,
-                          String phone) {
+    public UserEntity(String firstname,
+                      String surname,
+                      String address,
+                      String email,
+                      String phone) {
         this.firstname = firstname;
         this.surname = surname;
         this.address = address;
         this.email = email;
         this.phone = phone;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Integer getId() {
@@ -85,8 +81,8 @@ public class EmployeeEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EmployeeEntity employeeEntity = (EmployeeEntity) o;
-        return Objects.equals(id, employeeEntity.id);
+        UserEntity userEntity = (UserEntity) o;
+        return Objects.equals(id, userEntity.id);
     }
 
     @Override
