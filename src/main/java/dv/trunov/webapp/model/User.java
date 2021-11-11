@@ -2,12 +2,13 @@ package dv.trunov.webapp.model;
 
 import dv.trunov.webapp.domain.UserEntity;
 
-public class UserModel {
+public class User {
     private Integer id;
     private String firstname;
     private String surname;
+    private String category;
 
-    public UserModel() {
+    public User() {
     }
 
     public Integer getId() {
@@ -34,11 +35,20 @@ public class UserModel {
         this.surname = surname;
     }
 
-    public static UserModel toModel(UserEntity entity) {
-        UserModel model = new UserModel();
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public static User toModel(UserEntity entity) {
+        User model = new User();
         model.setId(entity.getId());
         model.setFirstname(entity.getFirstname());
         model.setSurname(entity.getSurname());
+        model.setCategory(entity.getCategory().getName());
         return model;
     }
 }

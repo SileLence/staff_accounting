@@ -1,11 +1,12 @@
 package dv.trunov.webapp.service;
 
+import dv.trunov.webapp.domain.CategoryEntity;
 import dv.trunov.webapp.domain.UserEntity;
 import dv.trunov.webapp.exception.ResourceNotFoundException;
-import dv.trunov.webapp.model.UserModel;
+import dv.trunov.webapp.model.User;
+import dv.trunov.webapp.repositories.CategoryRepository;
 import dv.trunov.webapp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,6 +17,8 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     public UserEntity add(UserEntity user) {
         return userRepository.save(user);
@@ -32,17 +35,36 @@ public class UserService {
                 () -> new ResourceNotFoundException("User not found."));
     }
 
-    public UserModel findModelById(Integer id)
+    public User findModelById(Integer id)
             throws ResourceNotFoundException {
         Optional<UserEntity> optUser = userRepository.findById(id);
-        return UserModel.toModel(optUser.orElseThrow(
+        return User.toModel(optUser.orElseThrow(
                 () -> new ResourceNotFoundException("User not found.")));
     }
 
-    public UserEntity update(UserEntity user)
+    public List<User> findByCategory(String categoryName)
             throws ResourceNotFoundException {
-        Optional<UserEntity> optUser = userRepository
-                .findById(user.getId());
+        List<User> result = new ArrayList<>();
+        Optional<CategoryEntity> optCategory
+                = categoryRepository.findByName(categoryName);
+        if (optCategory.isPresent()) {
+            CategoryEntity category = optCategory.get();
+            List<UserEntity> users
+                    = (ArrayList<UserEntity>) userRepository.findAll();
+            for (UserEntity user : users) {
+                if (category.equals(user.getCategory())) {
+                    result.add(User.toModel(user));
+                }
+            }
+        } else {
+            throw new ResourceNotFoundException("Category not found.");
+        }
+        return result;
+    }
+
+    public void update(UserEntity user)
+            throws ResourceNotFoundException {
+        Optional<UserEntity> optUser = userRepository.findById(user.getId());
         if (optUser.isPresent()) {
             UserEntity updatedUser = optUser.get();
             if (user.getFirstname() != null) {
@@ -60,17 +82,32 @@ public class UserService {
             if (user.getPhone() != null) {
                 updatedUser.setPhone(user.getPhone());
             }
-            return userRepository.save(updatedUser);
+            userRepository.save(updatedUser);
         } else {
             throw new ResourceNotFoundException("User not found.");
         }
     }
 
-    public ResponseEntity<Object> deleteById(Integer id)
+    public void addCategory(Integer userId, String categoryName)
+            throws ResourceNotFoundException {
+        Optional<UserEntity> optUser
+                = userRepository.findById(userId);
+        Optional<CategoryEntity> optCategory
+                = categoryRepository.findByName(categoryName);
+        if (optUser.isPresent() && optCategory.isPresent()) {
+            UserEntity user = optUser.get();
+            CategoryEntity category = optCategory.get();
+            user.setCategory(category);
+            userRepository.save(user);
+        } else {
+            throw new ResourceNotFoundException("User or Category not found");
+        }
+    }
+
+    public void deleteById(Integer id)
             throws ResourceNotFoundException {
         if (userRepository.findById(id).isPresent()) {
             userRepository.deleteById(id);
-            return ResponseEntity.ok("User with ID:" + id + " was deleted");
         } else {
             throw new ResourceNotFoundException("User not found.");
         }

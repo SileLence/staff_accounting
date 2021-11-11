@@ -1,15 +1,12 @@
 package dv.trunov.webapp.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     private String firstname;
@@ -18,19 +15,11 @@ public class UserEntity {
     private String email;
     private String phone;
 
-    public UserEntity() {
-    }
+    @OneToOne
+    @JoinColumn(name = "category_id")
+    private CategoryEntity category;
 
-    public UserEntity(String firstname,
-                      String surname,
-                      String address,
-                      String email,
-                      String phone) {
-        this.firstname = firstname;
-        this.surname = surname;
-        this.address = address;
-        this.email = email;
-        this.phone = phone;
+    public UserEntity() {
     }
 
     public Integer getId() {
@@ -77,10 +66,22 @@ public class UserEntity {
         this.phone = phone;
     }
 
+    public CategoryEntity getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryEntity category) {
+        this.category = category;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         UserEntity userEntity = (UserEntity) o;
         return Objects.equals(id, userEntity.id);
     }
