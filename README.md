@@ -1,7 +1,27 @@
-### Staff Accounting Web Application
+## Staff Accounting Web Application
+_This is a training project for learning Spring Boot and REST API._
 ___
 
-This is a training project for learning Spring Boot and REST API.
+### Description
+The application works with a PostgreSQL database. 
+The database has two entities: User and Category (position). 
+The relationship of entities is one to one, owner User.
+- Used queries: POST, GET, PUT, DELETE
+- Exception handling is used
+
+### Capabilities
+- Add User and Category
+- Search User (All, by ID) and Category (All, by Name)
+- Update User, add User Category
+- Search for all Users with a certain Category
+
+### Project Screenshots
+###### Files Structure:
+![Files Structure](https://raw.githubusercontent.com/SileLence/staff_accounting/master/images/file_structure.png)
+###### Entity Relations:
+![Entity Relations](https://raw.githubusercontent.com/SileLence/staff_accounting/master/images/entity_relation.png)
+###### Postman Tests:
+![Postman Tests](https://raw.githubusercontent.com/SileLence/staff_accounting/master/images/postman_tests.png)
 
 _Trunov Denis_\
 _https://vk.com/SileLence_
