@@ -14,6 +14,7 @@ The relationship of entities is one to one, owner User.
 - Search User (All, by ID) and Category (All, by Name)
 - Update User, add User Category
 - Search for all Users with a certain Category
+- Delete User
 
 ### Project Screenshots
 ###### Files Structure:
