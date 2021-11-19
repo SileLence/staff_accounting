@@ -15,10 +15,15 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+    private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
+
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
+    public UserService(UserRepository userRepository,
+                       CategoryRepository categoryRepository) {
+        this.userRepository = userRepository;
+        this.categoryRepository = categoryRepository;
+    }
 
     public UserEntity add(UserEntity user) {
         return userRepository.save(user);
@@ -42,29 +47,13 @@ public class UserService {
                 () -> new ResourceNotFoundException("User not found.")));
     }
 
-    public List<User> findByCategory(String categoryName)
-            throws ResourceNotFoundException {
-        List<User> result = new ArrayList<>();
-        Optional<CategoryEntity> optCategory
-                = categoryRepository.findByName(categoryName);
-        if (optCategory.isPresent()) {
-            CategoryEntity category = optCategory.get();
-            List<UserEntity> users
-                    = (ArrayList<UserEntity>) userRepository.findAll();
-            for (UserEntity user : users) {
-                if (category.equals(user.getCategory())) {
-                    result.add(User.toModel(user));
-                }
-            }
-        } else {
-            throw new ResourceNotFoundException("Category not found.");
-        }
-        return result;
+    public List<UserEntity> findByCategory(String category) {
+        return userRepository.findByCategory(category);
     }
 
-    public void update(UserEntity user)
+    public void update(Integer id, UserEntity user)
             throws ResourceNotFoundException {
-        Optional<UserEntity> optUser = userRepository.findById(user.getId());
+        Optional<UserEntity> optUser = userRepository.findById(id);
         if (optUser.isPresent()) {
             UserEntity updatedUser = optUser.get();
             if (user.getFirstname() != null) {

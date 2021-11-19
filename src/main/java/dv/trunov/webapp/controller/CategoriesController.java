@@ -7,30 +7,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(path = "/categories")
-public class CategoryController {
-    @Autowired
-    private CategoryService categoryService;
+public class CategoriesController {
+    private final CategoryService categoryService;
 
-    @PostMapping("/add")
+    @Autowired
+    public CategoriesController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
+
+    @PostMapping
     public ResponseEntity<Object> add(@RequestBody CategoryEntity category) {
         categoryService.add(category);
         return ResponseEntity.ok("Category was added.");
     }
 
-    @GetMapping("/all")
-    public List<CategoryEntity> findAll() {
-        return categoryService.findAll();
+    @GetMapping
+    public ResponseEntity<Object> findAll() {
+        return ResponseEntity.ok(categoryService.findAll());
     }
 
-    @GetMapping("/find{name}")
+    @GetMapping("/{name}")
     public ResponseEntity<Object> findByName(@PathVariable String name) {
         try {
             return ResponseEntity.ok(categoryService.findByName(name));
         } catch (ResourceNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> delete(@PathVariable Integer id) {
+        try {
+            categoryService.delete(id);
+            return ResponseEntity.ok("Category with ID:" + id
+                    + " was deleted successfully.");
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
