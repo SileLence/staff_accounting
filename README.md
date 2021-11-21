@@ -7,7 +7,8 @@ The application works with a PostgreSQL database.
 The database has two entities: User and Category (position). 
 The relationship of entities is one to one, owner User.
 - Used queries: POST, GET, PUT, DELETE
-- Exception handling is used
+- Exception handling
+- DTO pattern
 
 ### Capabilities
 - Add User and Category
