@@ -19,7 +19,7 @@ The relationship of entities is one to one, owner User.
 
 ### Project Screenshots
 ###### Files Structure:
-![Files Structure](https://raw.githubusercontent.com/SileLence/staff_accounting/master/images/file_structure.png)
+![Files Structure](https://raw.githubusercontent.com/SileLence/staff_accounting/master/images/files_structure_2.png)
 ###### Entity Relations:
 ![Entity Relations](https://raw.githubusercontent.com/SileLence/staff_accounting/master/images/entity_relation.png)
 ###### Postman Tests:
