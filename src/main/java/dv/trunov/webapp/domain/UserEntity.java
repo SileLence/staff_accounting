@@ -22,6 +22,16 @@ public class UserEntity {
     public UserEntity() {
     }
 
+    public UserEntity(String firstname, String surname,
+                      String address, String email,
+                      String phone) {
+        this.firstname = firstname;
+        this.surname = surname;
+        this.address = address;
+        this.email = email;
+        this.phone = phone;
+    }
+
     public Integer getId() {
         return id;
     }

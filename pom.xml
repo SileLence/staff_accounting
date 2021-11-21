@@ -9,9 +9,9 @@
 	</parent>
 
 	<groupId>dv.trunov.webapp</groupId>
-	<artifactId>StaffAccounting</artifactId>
+	<artifactId>staff_accounting</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>StaffAccounting</name>
+	<name>staff_accounting</name>
 	<description>NetCracker Verification Task</description>
 
 	<properties>

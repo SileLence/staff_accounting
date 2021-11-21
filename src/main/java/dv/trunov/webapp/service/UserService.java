@@ -2,8 +2,11 @@ package dv.trunov.webapp.service;
 
 import dv.trunov.webapp.domain.CategoryEntity;
 import dv.trunov.webapp.domain.UserEntity;
+import dv.trunov.webapp.dto.Mapper;
+import dv.trunov.webapp.dto.UserCreationDto;
+import dv.trunov.webapp.dto.UserDto;
+import dv.trunov.webapp.dto.UserInfoDto;
 import dv.trunov.webapp.exception.ResourceNotFoundException;
-import dv.trunov.webapp.model.User;
 import dv.trunov.webapp.repositories.CategoryRepository;
 import dv.trunov.webapp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -25,35 +29,52 @@ public class UserService {
         this.categoryRepository = categoryRepository;
     }
 
-    public UserEntity add(UserEntity user) {
-        return userRepository.save(user);
+    public void add(UserCreationDto user) {
+        UserEntity userEntity = Mapper.toUserEntity(user);
+        Optional<CategoryEntity> optCategory
+                = categoryRepository.findByName(user.getCategory());
+        if (optCategory.isEmpty()) {
+            userEntity.setCategory(
+                    categoryRepository.findByName("<none>").get());
+        } else {
+            userEntity.setCategory(optCategory.get());
+        }
+        userRepository.save(userEntity);
     }
 
-    public List<UserEntity> findAll() {
-        return (ArrayList<UserEntity>) userRepository.findAll();
+    public List<UserDto> findAll() {
+        List<UserEntity> users
+                = (ArrayList<UserEntity>) userRepository.findAll();
+        return users.stream()
+                .map(Mapper::toUserDto)
+                .collect(Collectors.toList());
     }
 
-    public UserEntity findById(Integer id)
+    public UserDto findById(Integer id)
             throws ResourceNotFoundException {
         Optional<UserEntity> optUser = userRepository.findById(id);
-        return optUser.orElseThrow(
-                () -> new ResourceNotFoundException("User not found."));
-    }
-
-    public User findModelById(Integer id)
-            throws ResourceNotFoundException {
-        Optional<UserEntity> optUser = userRepository.findById(id);
-        return User.toModel(optUser.orElseThrow(
+        return Mapper.toUserDto(optUser.orElseThrow(
                 () -> new ResourceNotFoundException("User not found.")));
     }
 
-    public List<UserEntity> findByCategory(String category) {
-        return userRepository.findByCategory(category);
-    }
-
-    public void update(Integer id, UserEntity user)
+    public UserInfoDto findInfoById(Integer id)
             throws ResourceNotFoundException {
         Optional<UserEntity> optUser = userRepository.findById(id);
+        return Mapper.toUserInfoDto(optUser.orElseThrow(
+                () -> new ResourceNotFoundException("User not found.")));
+    }
+
+    public List<UserDto> findByCategory(String category) {
+        return userRepository.findByCategory(category).stream()
+                .map(Mapper::toUserDto)
+                .collect(Collectors.toList());
+    }
+
+    public void update(Integer userId, UserCreationDto user)
+            throws ResourceNotFoundException {
+        Optional<UserEntity> optUser = userRepository.findById(userId);
+        Optional<CategoryEntity> optCategory
+                = categoryRepository.findByName(user.getCategory());
         if (optUser.isPresent()) {
             UserEntity updatedUser = optUser.get();
             if (user.getFirstname() != null) {
@@ -70,6 +91,9 @@ public class UserService {
             }
             if (user.getPhone() != null) {
                 updatedUser.setPhone(user.getPhone());
+            }
+            if (optCategory.isPresent()) {
+                updatedUser.setCategory(optCategory.get());
             }
             userRepository.save(updatedUser);
         } else {

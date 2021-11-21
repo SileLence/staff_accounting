@@ -1,6 +1,6 @@
 package dv.trunov.webapp.controller;
 
-import dv.trunov.webapp.domain.UserEntity;
+import dv.trunov.webapp.dto.UserCreationDto;
 import dv.trunov.webapp.exception.ResourceNotFoundException;
 import dv.trunov.webapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +18,19 @@ public class UsersController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Object> addUser(@RequestBody UserEntity user) {
+	public ResponseEntity<Object> createUser(
+			@RequestBody UserCreationDto user) {
 		userService.add(user);
-		return ResponseEntity.ok("User was added.");
+		return ResponseEntity.ok("User was added successfully.");
 	}
 
 	@GetMapping
-	public ResponseEntity<Object> findAll() {
+	public ResponseEntity<Object> getAllUsers() {
 		return ResponseEntity.ok(userService.findAll());
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Object> findById(@PathVariable Integer id) {
+	public ResponseEntity<Object> getUserById(@PathVariable Integer id) {
 		try {
 			return ResponseEntity.ok(userService.findById(id));
 		} catch (ResourceNotFoundException e) {
@@ -37,28 +38,29 @@ public class UsersController {
 		}
 	}
 
-	@GetMapping("/{id}/model")
-	public ResponseEntity<Object> findModelById(@PathVariable Integer id) {
+	@GetMapping("/info/{id}")
+	public ResponseEntity<Object> getUserInfoById(@PathVariable Integer id) {
 		try {
-			return ResponseEntity.ok(userService.findModelById(id));
+			return ResponseEntity.ok(userService.findInfoById(id));
 		} catch (ResourceNotFoundException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 
-	@GetMapping("/category")
-	public ResponseEntity<Object> findByCategory(
-			@RequestParam String category) {
-		return ResponseEntity.ok(userService.findByCategory(category));
+	@GetMapping("/category/{name}")
+	public ResponseEntity<Object> getUsersByCategory(
+			@PathVariable String name) {
+		return ResponseEntity.ok(userService.findByCategory(name));
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Object> update(@PathVariable Integer id,
-										 @RequestBody UserEntity user) {
+	public ResponseEntity<Object> updateUser(
+			@PathVariable("id") Integer userId,
+			@RequestBody UserCreationDto user) {
 		try {
-			userService.update(id, user);
+			userService.update(userId, user);
 			return ResponseEntity.ok("User with ID:"
-					+ id
+					+ userId
 					+ " was updated successfully.");
 		} catch (ResourceNotFoundException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
@@ -66,7 +68,7 @@ public class UsersController {
 	}
 
 	@PutMapping("/category")
-	public ResponseEntity<Object> addCategory(
+	public ResponseEntity<Object> addUserCategory(
 			@RequestParam Integer userId,
 			@RequestParam String categoryName) {
 		try {

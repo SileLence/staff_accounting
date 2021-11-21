@@ -1,6 +1,5 @@
 package dv.trunov.webapp.controller;
 
-import dv.trunov.webapp.domain.CategoryEntity;
 import dv.trunov.webapp.exception.ResourceNotFoundException;
 import dv.trunov.webapp.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +17,23 @@ public class CategoriesController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> add(@RequestBody CategoryEntity category) {
-        categoryService.add(category);
-        return ResponseEntity.ok("Category was added.");
+    public ResponseEntity<Object> createCategory(
+            @RequestParam String category) {
+        try {
+            categoryService.add(category);
+            return ResponseEntity.ok("Category was added successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping
-    public ResponseEntity<Object> findAll() {
+    public ResponseEntity<Object> getAllCategories() {
         return ResponseEntity.ok(categoryService.findAll());
     }
 
     @GetMapping("/{name}")
-    public ResponseEntity<Object> findByName(@PathVariable String name) {
+    public ResponseEntity<Object> getCategoryByName(@PathVariable String name) {
         try {
             return ResponseEntity.ok(categoryService.findByName(name));
         } catch (ResourceNotFoundException e) {
@@ -38,7 +42,7 @@ public class CategoriesController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete(@PathVariable Integer id) {
+    public ResponseEntity<Object> deleteCategory(@PathVariable Integer id) {
         try {
             categoryService.delete(id);
             return ResponseEntity.ok("Category with ID:" + id
