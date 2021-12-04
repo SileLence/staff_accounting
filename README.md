@@ -5,17 +5,20 @@ ___
 ### Description
 The application works with a PostgreSQL database. 
 The database has two entities: User and Category (position). 
-The relationship of entities is one to one, owner User.
+The relationship of entities is one to one, owner is User.
+- Project built with Maven
 - Used queries: POST, GET, PUT, DELETE
 - Exception handling
 - DTO pattern
+- Spring validation
 
 ### Capabilities
 - Add User and Category
-- Search User (All, by ID) and Category (All, by Name)
-- Update User, add User Category
+- Search User: all, find by ID
+- Search Category: all, find by Name
+- Update User data, update User Category
 - Search for all Users with a certain Category
-- Delete User
+- Delete User and Category
 
 ### Project Screenshots
 ###### Files Structure:
@@ -26,5 +29,5 @@ The relationship of entities is one to one, owner User.
 ![Postman Tests](https://raw.githubusercontent.com/SileLence/staff_accounting/master/images/postman_tests.png)
 
 _Trunov Denis_\
-_https://vk.com/SileLence_
+_Telegram: @SileLence_
 

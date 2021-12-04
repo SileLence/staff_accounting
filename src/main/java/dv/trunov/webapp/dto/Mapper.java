@@ -24,31 +24,17 @@ public class Mapper {
     }
 
     public static UserEntity toUserEntity(UserCreationDto user) {
-        String firstname = user.getFirstname();
-        if (firstname == null) {
-            firstname = "<none>";
-        }
-        String surname = user.getSurname();
-        if (surname == null) {
-            surname = "<none>";
-        }
-        String address = user.getAddress();
-        if (address == null) {
-            address = "<none>";
-        }
-        String email = user.getEmail();
-        if (email == null) {
-            email = "<none>";
-        }
-        String phone = user.getPhone();
-        if (phone == null) {
-            phone = "<none>";
-        }
-        return new UserEntity(firstname, surname, address, email, phone);
+        return new UserEntity(
+                user.getFirstname(),
+                user.getSurname(),
+                user.getAddress(),
+                user.getEmail(),
+                user.getPhone());
     }
 
-    public static CategoryEntity toCategoryEntity(String categoryName) {
-        return new CategoryEntity(categoryName);
+    public static CategoryEntity toCategoryEntity(
+            CategoryCreationDto categoryCreationDto) {
+        return new CategoryEntity(categoryCreationDto.getName());
     }
 
     public static CategoryDto toCategoryDto(CategoryEntity category) {

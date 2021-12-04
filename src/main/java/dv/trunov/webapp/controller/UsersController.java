@@ -1,12 +1,19 @@
 package dv.trunov.webapp.controller;
 
 import dv.trunov.webapp.dto.UserCreationDto;
+import dv.trunov.webapp.dto.UserDto;
 import dv.trunov.webapp.exception.ResourceNotFoundException;
 import dv.trunov.webapp.service.UserService;
+import dv.trunov.webapp.validation.Marker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.List;
+
+@Validated
 @RestController
 @RequestMapping(path="/users")
 public class UsersController {
@@ -18,10 +25,16 @@ public class UsersController {
 	}
 
 	@PostMapping
+	@Validated(Marker.OnCreate.class)
 	public ResponseEntity<Object> createUser(
-			@RequestBody UserCreationDto user) {
-		userService.add(user);
-		return ResponseEntity.ok("User was added successfully.");
+			@Valid @RequestBody UserCreationDto user,
+			@RequestParam String category) {
+		try {
+			userService.add(user, category);
+			return ResponseEntity.ok("User was added successfully.");
+		} catch (ResourceNotFoundException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 
 	@GetMapping
@@ -50,13 +63,19 @@ public class UsersController {
 	@GetMapping("/category/{name}")
 	public ResponseEntity<Object> getUsersByCategory(
 			@PathVariable String name) {
-		return ResponseEntity.ok(userService.findByCategory(name));
+		List<UserDto> users = userService.findByCategory(name);
+		if (users.isEmpty()) {
+			return ResponseEntity.ok(
+					"Users not found or Category is not exists.");
+		}
+		return ResponseEntity.ok(users);
 	}
 
 	@PutMapping("/{id}")
+	@Validated(Marker.OnUpdate.class)
 	public ResponseEntity<Object> updateUser(
 			@PathVariable("id") Integer userId,
-			@RequestBody UserCreationDto user) {
+			@Valid @RequestBody UserCreationDto user) {
 		try {
 			userService.update(userId, user);
 			return ResponseEntity.ok("User with ID:"
@@ -68,14 +87,12 @@ public class UsersController {
 	}
 
 	@PutMapping("/category")
-	public ResponseEntity<Object> addUserCategory(
-			@RequestParam Integer userId,
-			@RequestParam String categoryName) {
+	public ResponseEntity<Object> updateUserCategory(
+			@RequestParam("id") Integer userId,
+			@RequestParam String category) {
 		try {
-			userService.addCategory(userId, categoryName);
-			return ResponseEntity.ok("Category " + categoryName
-					+ " was added to User with ID:"
-					+ userId);
+			userService.updateCategory(userId, category);
+			return ResponseEntity.ok("User's category was updated.");
 		} catch (ResourceNotFoundException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}

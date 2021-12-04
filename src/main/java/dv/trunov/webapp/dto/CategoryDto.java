@@ -2,6 +2,7 @@ package dv.trunov.webapp.dto;
 
 public class CategoryDto {
     private Integer id;
+
     private String name;
 
     public CategoryDto(Integer id, String name) {
@@ -23,11 +24,5 @@ public class CategoryDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "Category ID: " + id + "\n"
-               + "Name: " + name + ":\n";
     }
 }

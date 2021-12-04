@@ -1,11 +1,16 @@
 package dv.trunov.webapp.controller;
 
-import dv.trunov.webapp.exception.ResourceNotFoundException;
+import dv.trunov.webapp.dto.CategoryCreationDto;
+import dv.trunov.webapp.dto.CategoryDto;
 import dv.trunov.webapp.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
+@Validated
 @RestController
 @RequestMapping(path = "/categories")
 public class CategoriesController {
@@ -17,14 +22,11 @@ public class CategoriesController {
     }
 
     @PostMapping
+    @Validated
     public ResponseEntity<Object> createCategory(
-            @RequestParam String category) {
-        try {
-            categoryService.add(category);
-            return ResponseEntity.ok("Category was added successfully.");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+            @Valid @RequestBody CategoryCreationDto category) {
+        categoryService.add(category);
+        return ResponseEntity.ok("The category was added successfully.");
     }
 
     @GetMapping
@@ -34,21 +36,14 @@ public class CategoriesController {
 
     @GetMapping("/{name}")
     public ResponseEntity<Object> getCategoryByName(@PathVariable String name) {
-        try {
-            return ResponseEntity.ok(categoryService.findByName(name));
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        CategoryDto category = categoryService.findByName(name);
+        return ResponseEntity.ok(category);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteCategory(@PathVariable Integer id) {
-        try {
-            categoryService.delete(id);
-            return ResponseEntity.ok("Category with ID:" + id
-                    + " was deleted successfully.");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        categoryService.delete(id);
+        return ResponseEntity.ok("The category with ID:" + id
+                + " was deleted successfully.");
     }
 }

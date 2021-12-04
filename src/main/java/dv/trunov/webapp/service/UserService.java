@@ -29,13 +29,13 @@ public class UserService {
         this.categoryRepository = categoryRepository;
     }
 
-    public void add(UserCreationDto user) {
+    public void add(UserCreationDto user, String category)
+            throws ResourceNotFoundException {
         UserEntity userEntity = Mapper.toUserEntity(user);
         Optional<CategoryEntity> optCategory
-                = categoryRepository.findByName(user.getCategory());
+                = categoryRepository.findByName(category);
         if (optCategory.isEmpty()) {
-            userEntity.setCategory(
-                    categoryRepository.findByName("<none>").get());
+            throw new ResourceNotFoundException("Category not found.");
         } else {
             userEntity.setCategory(optCategory.get());
         }
@@ -71,37 +71,22 @@ public class UserService {
     }
 
     public void update(Integer userId, UserCreationDto user)
-            throws ResourceNotFoundException {
+            throws ResourceNotFoundException, IllegalArgumentException {
         Optional<UserEntity> optUser = userRepository.findById(userId);
-        Optional<CategoryEntity> optCategory
-                = categoryRepository.findByName(user.getCategory());
         if (optUser.isPresent()) {
             UserEntity updatedUser = optUser.get();
-            if (user.getFirstname() != null) {
-                updatedUser.setFirstname(user.getFirstname());
-            }
-            if (user.getSurname() != null) {
-                updatedUser.setSurname(user.getSurname());
-            }
-            if (user.getAddress() != null) {
-                updatedUser.setAddress(user.getAddress());
-            }
-            if (user.getEmail() != null) {
-                updatedUser.setEmail(user.getEmail());
-            }
-            if (user.getPhone() != null) {
-                updatedUser.setPhone(user.getPhone());
-            }
-            if (optCategory.isPresent()) {
-                updatedUser.setCategory(optCategory.get());
-            }
+            updatedUser.setFirstname(user.getFirstname());
+            updatedUser.setSurname(user.getSurname());
+            updatedUser.setAddress(user.getAddress());
+            updatedUser.setEmail(user.getEmail());
+            updatedUser.setPhone(user.getPhone());
             userRepository.save(updatedUser);
         } else {
             throw new ResourceNotFoundException("User not found.");
         }
     }
 
-    public void addCategory(Integer userId, String categoryName)
+    public void updateCategory(Integer userId, String categoryName)
             throws ResourceNotFoundException {
         Optional<UserEntity> optUser
                 = userRepository.findById(userId);

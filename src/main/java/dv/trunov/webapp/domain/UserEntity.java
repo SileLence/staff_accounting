@@ -16,7 +16,7 @@ public class UserEntity {
     private String phone;
 
     @OneToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private CategoryEntity category;
 
     public UserEntity() {
