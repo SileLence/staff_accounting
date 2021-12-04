@@ -26,7 +26,7 @@ The relationship of entities is one to one, owner is User.
 ###### Entity Relations:
 ![Entity Relations](https://raw.githubusercontent.com/SileLence/staff_accounting/master/images/entity_relation.png)
 ###### Postman Tests:
-![Postman Tests](https://raw.githubusercontent.com/SileLence/staff_accounting/master/images/postman_tests.png)
+![Postman Tests](https://raw.githubusercontent.com/SileLence/staff_accounting/master/images/postman_tests_2.png)
 
 #### My Contacts
 _Trunov Denis_\
