@@ -11,17 +11,13 @@ import javax.validation.constraints.Pattern;
 @Validated
 public class UserCreationDto {
 
-    @NotBlank(
-            groups = Marker.OnCreate.class,
-            message = "First Name cannot be empty.")
+    @NotBlank(message = "First name cannot be empty.")
     @Pattern(
             regexp = "[A-Z][a-z]{1,15}|[А-ЯЁ][а-яё]{1,15}",
-            message = "First Name must start with a capital letter.")
+            message = "First name must start with a capital letter.")
     private String firstname;
 
-    @NotBlank(
-            groups = Marker.OnCreate.class,
-            message = "Surname cannot be empty.")
+    @NotBlank(message = "Surname cannot be empty.")
     @Pattern(
             regexp = "[A-Z][a-z]{1,15}|[А-ЯЁ][а-яё]{1,15}",
             message = "Surname must start with a capital letter.")
@@ -42,7 +38,7 @@ public class UserCreationDto {
 
     @Pattern(
             regexp = "\\+[1-9][0-9]{10}",
-            message = "Enter the phone number in the format: '+79876543210'")
+            message = "Enter the phone number in the format: +79876543210")
     private String phone;
 
     private String category;

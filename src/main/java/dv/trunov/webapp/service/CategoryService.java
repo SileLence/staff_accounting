@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,6 +41,7 @@ public class CategoryService {
                 = (ArrayList<CategoryEntity>) categoryRepository.findAll();
         return categories.stream()
                 .map(Mapper::toCategoryDto)
+                .sorted(Comparator.comparingInt(CategoryDto::getId))
                 .collect(Collectors.toList());
     }
 
