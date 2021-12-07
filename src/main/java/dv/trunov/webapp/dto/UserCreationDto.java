@@ -4,41 +4,38 @@ package dv.trunov.webapp.dto;
 import dv.trunov.webapp.validation.Marker;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 
 @Validated
 public class UserCreationDto {
 
-    @NotBlank(message = "First name cannot be empty.")
-    @Pattern(
-            regexp = "[A-Z][a-z]{1,15}|[А-ЯЁ][а-яё]{1,15}",
-            message = "First name must start with a capital letter.")
+    @NotBlank(message = "Firstname cannot be empty.")
+    @Pattern(regexp = "[A-Z][a-z]*",
+            message = "Firstname must be capitalized.")
+    @Size(min = 2, max = 35,
+            message = "Firstname length between 2 and 35 symbols.")
     private String firstname;
 
     @NotBlank(message = "Surname cannot be empty.")
-    @Pattern(
-            regexp = "[A-Z][a-z]{1,15}|[А-ЯЁ][а-яё]{1,15}",
-            message = "Surname must start with a capital letter.")
+    @Pattern(regexp = "[A-Z][a-z]*",
+            message = "Surname must be capitalized.")
+    @Size(min = 2, max = 35,
+            message = "Surname length between 2 and 35 symbols.")
     private String surname;
 
-    @NotBlank(
-            groups = Marker.OnCreate.class,
+    @NotBlank(groups = Marker.OnCreate.class,
             message = "Address cannot be empty.")
-    @Pattern(
-            regexp = "^[A-Za-z\s.-]{1,25}/[0-9A-Za-z\s.-]{1,25}/" +
-            "[0-9A-Za-z]{1,7}/[0-9]{1,5}",
-            message = "Enter the address in the format: " +
-                    "'City/Street/HouseNumber/ApartmentNumber'")
+    @Pattern(regexp = "^[A-Za-z\s.-]{1,50}/[0-9A-Za-z\s.-]{1,50}/"
+            + "[0-9A-Za-z]{1,10}/[0-9]{1,10}",
+            message = "Correct address format: "
+                   + "City/Street/HouseNumber/ApartmentNumber")
     private String address;
 
     @Email(message = "Email is incorrect.")
     private String email;
 
-    @Pattern(
-            regexp = "\\+[1-9][0-9]{10}",
-            message = "Enter the phone number in the format: +79876543210")
+    @Pattern(regexp = "\\+[1-9][0-9]{10}",
+            message = "Correct phone number format: +79876543210")
     private String phone;
 
     private String category;

@@ -4,11 +4,13 @@ import dv.trunov.webapp.dto.CategoryCreationDto;
 import dv.trunov.webapp.dto.CategoryDto;
 import dv.trunov.webapp.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Validated
 @RestController
@@ -23,27 +25,31 @@ public class CategoriesController {
 
     @PostMapping
     @Validated
-    public ResponseEntity<Object> createCategory(
+    public ResponseEntity<String> createCategory(
             @Valid @RequestBody CategoryCreationDto category) {
         categoryService.add(category);
-        return ResponseEntity.ok("The category was added successfully.");
+        return new ResponseEntity<>(
+                "The category was added successfully.",
+                HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<Object> getAllCategories() {
+    public ResponseEntity<List<CategoryDto>> getAllCategories() {
         return ResponseEntity.ok(categoryService.findAll());
     }
 
     @GetMapping("/{name}")
-    public ResponseEntity<Object> getCategoryByName(@PathVariable String name) {
+    public ResponseEntity<CategoryDto> getCategoryByName(
+            @PathVariable String name) {
         CategoryDto category = categoryService.findByName(name);
         return ResponseEntity.ok(category);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteCategory(@PathVariable Integer id) {
+    public ResponseEntity<String> deleteCategory(@PathVariable Integer id) {
         categoryService.delete(id);
-        return ResponseEntity.ok(
-                "The category with ID: " + id + " was deleted successfully.");
+        return ResponseEntity.ok(String.format(
+                "The category with ID: %d was deleted successfully.", id)
+        );
     }
 }

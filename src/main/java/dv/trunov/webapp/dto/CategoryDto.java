@@ -1,8 +1,8 @@
 package dv.trunov.webapp.dto;
 
 public class CategoryDto {
-    private Integer id;
 
+    private Integer id;
     private String name;
 
     public CategoryDto(Integer id, String name) {
