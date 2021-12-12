@@ -11,6 +11,7 @@ The relationship of entities is one to one, owner is User.
 - Exception handling
 - DTO pattern
 - Spring validation
+- Checkstyle
 
 ### Capabilities
 - Add User and Category
