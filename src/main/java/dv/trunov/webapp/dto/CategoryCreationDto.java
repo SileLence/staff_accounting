@@ -2,7 +2,9 @@ package dv.trunov.webapp.dto;
 
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Validated
 public class CategoryCreationDto {

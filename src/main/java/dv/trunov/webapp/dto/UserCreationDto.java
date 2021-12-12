@@ -1,10 +1,12 @@
 package dv.trunov.webapp.dto;
 
-
 import dv.trunov.webapp.validation.Marker;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Validated
 public class UserCreationDto {

@@ -10,6 +10,7 @@ import java.util.List;
 public interface UserRepository
         extends CrudRepository<UserEntity, Integer> {
 
-    @Query("SELECT u FROM UserEntity AS u WHERE u.category.name = :category")
+    @Query("SELECT user FROM UserEntity AS user "
+           + "WHERE user.category.name = :category")
     List<UserEntity> findByCategory(@Param("category") String category);
 }

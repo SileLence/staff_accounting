@@ -37,7 +37,7 @@ public class UserDto {
 
     @Override
     public String toString() {
-        return  "User ID: " + id + "\n"
+        return "User ID: " + id + "\n"
                 + "Name: " + name + "\n"
                 + "Category: " + category + "\n";
     }
