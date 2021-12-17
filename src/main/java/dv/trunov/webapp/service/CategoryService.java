@@ -30,7 +30,7 @@ public class CategoryService {
         this.userRepository = userRepository;
     }
 
-    public void add(CategoryCreationDto category) {
+    public void addCategory(CategoryCreationDto category) {
         Optional<CategoryEntity> categoryEntity
                 = categoryRepository.findByName(category.getName());
         if (categoryEntity.isPresent()) {
@@ -40,7 +40,7 @@ public class CategoryService {
         categoryRepository.save(Mapper.toCategoryEntity(category));
     }
 
-    public List<CategoryDto> findAll() {
+    public List<CategoryDto> findAllCategories() {
         List<CategoryEntity> categories
                 = (ArrayList<CategoryEntity>) categoryRepository.findAll();
         return categories.stream()
@@ -49,14 +49,14 @@ public class CategoryService {
                 .collect(Collectors.toList());
     }
 
-    public CategoryDto findByName(String name) {
+    public CategoryDto findCategoryByName(String name) {
         Optional<CategoryEntity> optCategory
                 = categoryRepository.findByName(name);
         return Mapper.toCategoryDto(optCategory.orElseThrow(
                 () -> new NoSuchElementException("Category not found.")));
     }
 
-    public void delete(Integer id) {
+    public void deleteCategory(Integer id) {
         Optional<CategoryEntity> optCategory = categoryRepository.findById(id);
         if (optCategory.isEmpty()) {
             throw new NoSuchElementException("Category not found.");

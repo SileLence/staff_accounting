@@ -38,7 +38,7 @@ public class UsersController {
 	public ResponseEntity<String> createUser(
 			@Valid @RequestBody UserCreationDto user,
 			@RequestParam String category) {
-		userService.add(user, category);
+		userService.addUser(user, category);
 		return new ResponseEntity<>(
 				"User was added successfully.",
 				HttpStatus.CREATED);
@@ -46,24 +46,24 @@ public class UsersController {
 
 	@GetMapping
 	public ResponseEntity<List<UserDto>> getAllUsers() {
-		return ResponseEntity.ok(userService.findAll());
+		return ResponseEntity.ok(userService.findAllUsers());
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<UserDto> getUserById(@PathVariable Integer id) {
-		return ResponseEntity.ok(userService.findById(id));
+		return ResponseEntity.ok(userService.findUserById(id));
 	}
 
 	@GetMapping("/info/{id}")
 	public ResponseEntity<UserInfoDto> getUserInfoById(
 			@PathVariable Integer id) {
-		return ResponseEntity.ok(userService.findInfoById(id));
+		return ResponseEntity.ok(userService.findUserInfoById(id));
 	}
 
 	@GetMapping("/category/{category}")
 	public ResponseEntity<List<UserDto>> getUsersByCategory(
 			@PathVariable String category) {
-		return ResponseEntity.ok(userService.findByCategory(category));
+		return ResponseEntity.ok(userService.findUsersByCategory(category));
 	}
 
 	@PutMapping("/{id}")
@@ -71,7 +71,7 @@ public class UsersController {
 	public ResponseEntity<String> updateUser(
 			@PathVariable("id") Integer userId,
 			@Valid @RequestBody UserCreationDto user) {
-		userService.update(userId, user);
+		userService.updateUser(userId, user);
 		return ResponseEntity.ok(String.format(
 				"User with ID: %d was updated successfully.", userId)
 		);
@@ -81,13 +81,13 @@ public class UsersController {
 	public ResponseEntity<String> updateUserCategory(
 			@RequestParam("id") Integer userId,
 			@RequestParam String category) {
-		userService.updateCategory(userId, category);
+		userService.updateUserCategory(userId, category);
 		return ResponseEntity.ok("User's category was updated.");
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteUser(@PathVariable Integer id) {
-		userService.deleteById(id);
+		userService.deleteUserById(id);
 		return ResponseEntity.ok(String.format(
 				"User with ID: %d was deleted successfully.", id)
 		);

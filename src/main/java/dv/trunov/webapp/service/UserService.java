@@ -30,18 +30,18 @@ public class UserService {
         this.categoryRepository = categoryRepository;
     }
 
-    public void add(UserCreationDto user, String category) {
-        UserEntity userEntity = Mapper.toUserEntity(user);
+    public void addUser(UserCreationDto user, String category) {
         Optional<CategoryEntity> optCategory
                 = categoryRepository.findByName(category);
         if (optCategory.isEmpty()) {
             throw new NoSuchElementException("Category not found.");
         }
+        UserEntity userEntity = Mapper.toUserEntity(user);
         userEntity.setCategory(optCategory.get());
         userRepository.save(userEntity);
     }
 
-    public List<UserDto> findAll() {
+    public List<UserDto> findAllUsers() {
         List<UserEntity> users
                 = (ArrayList<UserEntity>) userRepository.findAll();
         return users.stream()
@@ -50,19 +50,19 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public UserDto findById(Integer id) {
+    public UserDto findUserById(Integer id) {
         Optional<UserEntity> optUser = userRepository.findById(id);
         return Mapper.toUserDto(optUser.orElseThrow(
                 () -> new NoSuchElementException("User not found.")));
     }
 
-    public UserInfoDto findInfoById(Integer id) {
+    public UserInfoDto findUserInfoById(Integer id) {
         Optional<UserEntity> optUser = userRepository.findById(id);
         return Mapper.toUserInfoDto(optUser.orElseThrow(
                 () -> new NoSuchElementException("User not found.")));
     }
 
-    public List<UserDto> findByCategory(String category) {
+    public List<UserDto> findUsersByCategory(String category) {
         if (categoryRepository.findByName(category).isEmpty()) {
             throw new NoSuchElementException("Category not found.");
         }
@@ -79,7 +79,7 @@ public class UserService {
         return users;
     }
 
-    public void update(Integer userId, UserCreationDto user) {
+    public void updateUser(Integer userId, UserCreationDto user) {
         Optional<UserEntity> optUser = userRepository.findById(userId);
         if (optUser.isEmpty()) {
             throw new NoSuchElementException("User not found.");
@@ -93,7 +93,7 @@ public class UserService {
         userRepository.save(updatedUser);
     }
 
-    public void updateCategory(Integer userId, String categoryName) {
+    public void updateUserCategory(Integer userId, String categoryName) {
         Optional<CategoryEntity> optCategory
                 = categoryRepository.findByName(categoryName);
         Optional<UserEntity> optUser
@@ -109,7 +109,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void deleteById(Integer id) {
+    public void deleteUserById(Integer id) {
         if (userRepository.findById(id).isEmpty()) {
             throw new NoSuchElementException("User not found.");
         }

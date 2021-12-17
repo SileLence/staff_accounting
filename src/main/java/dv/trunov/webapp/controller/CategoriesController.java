@@ -33,7 +33,7 @@ public class CategoriesController {
     @Validated
     public ResponseEntity<String> createCategory(
             @Valid @RequestBody CategoryCreationDto category) {
-        categoryService.add(category);
+        categoryService.addCategory(category);
         return new ResponseEntity<>(
                 "The category was added successfully.",
                 HttpStatus.CREATED);
@@ -41,19 +41,19 @@ public class CategoriesController {
 
     @GetMapping
     public ResponseEntity<List<CategoryDto>> getAllCategories() {
-        return ResponseEntity.ok(categoryService.findAll());
+        return ResponseEntity.ok(categoryService.findAllCategories());
     }
 
     @GetMapping("/{name}")
     public ResponseEntity<CategoryDto> getCategoryByName(
             @PathVariable String name) {
-        CategoryDto category = categoryService.findByName(name);
+        CategoryDto category = categoryService.findCategoryByName(name);
         return ResponseEntity.ok(category);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCategory(@PathVariable Integer id) {
-        categoryService.delete(id);
+        categoryService.deleteCategory(id);
         return ResponseEntity.ok(String.format(
                 "The category with ID: %d was deleted successfully.", id)
         );
