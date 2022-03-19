@@ -31,4 +31,4 @@ The relationship of entities is one to one, owner is User.
 
 #### My Contacts
 _Trunov Denis_\
-_Telegram: @SileLence_
+_Telegram: @SileJence_
